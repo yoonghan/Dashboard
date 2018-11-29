@@ -46,11 +46,15 @@ class SystemNetwork extends React.Component<SystemNetworkProps, {}> {
   private force:Simulation<any, any> = null;
   private LINE_DISTANCE = this.PARENT_SIZE * 2;
   private ALPHA_MIN = 0.01;
+  private zoomWidth:number = 100;
+  private zoomHeight:number = 100;
 
   constructor(props: SystemNetworkProps) {
     super(props);
     this.data = this._remapObject(props.initData);
     this.translate = getTranslator(props.language);
+    this.zoomWidth = props.width;
+    this.zoomHeight = props.height;
   }
 
   componentDidMount() {
@@ -61,6 +65,20 @@ class SystemNetwork extends React.Component<SystemNetworkProps, {}> {
   //Cannot be update!!
   shouldComponentUpdate() {
     return false;
+  }
+
+  _zoomIn = () => {
+    const svg = d3.select(this.networkRef.current);
+    this.zoomWidth -= 10;
+    this.zoomHeight -= 10;
+    svg.attr("viewBox", `0 0 ${this.zoomWidth} ${this.zoomHeight}`);
+  }
+
+  _zoomOut = () => {
+    const svg = d3.select(this.networkRef.current);
+    this.zoomWidth += 10;
+    this.zoomHeight += 10;
+    svg.attr("viewBox", `0 0 ${this.zoomWidth} ${this.zoomHeight}`);
   }
 
   addNodes(newConnections: Array<NodeInfoModal>) {
@@ -161,6 +179,8 @@ class SystemNetwork extends React.Component<SystemNetworkProps, {}> {
     const {width, height} = this.props;
     const {PARENT_SIZE, CHILD_SIZE, ALPHA_MIN} = this;
     const svg = d3.select(this.networkRef.current);
+    const expWidth = (width - PARENT_SIZE);
+    const expHeight = (height - PARENT_SIZE);
 
     this.force = d3
       .forceSimulation()
@@ -178,8 +198,8 @@ class SystemNetwork extends React.Component<SystemNetworkProps, {}> {
       svg
         .selectAll('circle')
         .attr('cx', (d: any) => {
-          if(d.x > (width - PARENT_SIZE)) {
-            return (width - PARENT_SIZE);
+          if(d.x > expWidth) {
+            return expWidth;
           }
           if(d.x < 0) {
             return 0;
@@ -188,8 +208,8 @@ class SystemNetwork extends React.Component<SystemNetworkProps, {}> {
           return d.x;
         })
         .attr('cy', (d: any) => {
-          if(d.y > (height - PARENT_SIZE)) {
-            return (height - PARENT_SIZE);
+          if(d.y > expHeight) {
+            return expHeight;
           }
           if(d.y < 0) {
             return 0;
@@ -199,7 +219,12 @@ class SystemNetwork extends React.Component<SystemNetworkProps, {}> {
         });
       svg
         .selectAll('g>text')
-        .attr('dx', (d: any) => d.x).attr('dy', (d: any) => d.y);
+        .attr('dx', (d: any) => {
+          return d.x;
+        })
+        .attr('dy', (d: any) => {
+          return d.y;
+        });
     });
   }
 
@@ -313,7 +338,7 @@ class SystemNetwork extends React.Component<SystemNetworkProps, {}> {
     const {width, height} = this.props;
     return (
       <React.Fragment>
-        <svg width={width} height={height} ref={this.networkRef} viewBox="0 0 100 100" className={'wc-system-network'}>
+        <svg width={width} height={height} ref={this.networkRef} viewBox={`0 0 ${this.zoomWidth} ${this.zoomHeight}`} className={"wc-system-network"}>
           <style jsx>
           {`
             .wc-system-network {
@@ -381,6 +406,8 @@ class SystemNetwork extends React.Component<SystemNetworkProps, {}> {
           initShowAgent = {true}
           toggleStore = {this._toggleShowMaster}
           toggleAgent = {this._toggleShowAgent}
+          zoomIn = {this._zoomIn}
+          zoomOut = {this._zoomOut}
         />
       </React.Fragment>
     );

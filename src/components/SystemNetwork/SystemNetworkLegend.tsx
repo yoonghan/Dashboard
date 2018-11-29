@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import produce from "immer";
+import Button from '@material-ui/core/Button';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControl from '@material-ui/core/FormControl';
@@ -18,6 +19,8 @@ interface SystemNetworkLegendProps {
   initShowAgent: boolean;
   toggleStore: (state: boolean) => void;
   toggleAgent: (state:boolean) => void;
+  zoomIn: () => void;
+  zoomOut: () => void;
 }
 
 interface SystemNetworkLegendState {
@@ -34,13 +37,20 @@ class SystemNetworkLegend extends React.PureComponent<SystemNetworkLegendProps, 
     }
   }
 
+  _unExpand = () => {
+    this.props.zoomOut();
+  }
+
+  _expand = () => {
+    this.props.zoomIn();
+  }
+
   _toggleShow = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {toggleStore, toggleAgent} = this.props;
     const {name, checked} = event.target;
 
     this.setState(
       produce<SystemNetworkLegendState>(draft => {
-        console.log(name);
         switch(name) {
           case ShowType.STORES:
             draft.showStore = !draft.showStore;
@@ -81,6 +91,22 @@ class SystemNetworkLegend extends React.PureComponent<SystemNetworkLegendProps, 
               />
             }
             label="Agents"
+          />
+          <FormControlLabel
+            control={
+              <Button onClick={this._unExpand} color="secondary">
+                -
+              </Button>
+            }
+            label="Zoom Out"
+          />
+          <FormControlLabel
+            control={
+              <Button onClick={this._expand} color="secondary">
+                +
+              </Button>
+            }
+            label="Zoom In"
           />
         </FormGroup>
       </FormControl>
