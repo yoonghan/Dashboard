@@ -282,7 +282,7 @@ class SystemNetwork extends React.Component<SystemNetworkProps, {}> {
           .on('end', this._nodeDragEnded(this.force)),
       )
 
-    this.force.alphaTarget(0.1).restart();
+    this.force.alpha(1).restart();
   }
 
   _displayClass = (data:NodeInfoModal) => {

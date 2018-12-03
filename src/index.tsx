@@ -1,7 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import TDashboard from "./components/container/TDashboard";
 
 ReactDOM.render(
-    <div>Test</div>,
+    <TDashboard/>,
     document.getElementById("prototype")
 );

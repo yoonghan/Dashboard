@@ -8,13 +8,22 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import { withStyles, createStyles, WithStyles, Theme } from '@material-ui/core/styles';
 
 enum ShowType {
   STORES = "stores",
   AGENTS = "agents"
 }
 
-interface SystemNetworkLegendProps {
+const styles = (theme:Theme) => createStyles({
+  root: {
+    position: 'absolute',
+    bottom: 0,
+    left: '20px'
+  }
+});
+
+interface SystemNetworkLegendProps extends WithStyles<typeof styles> {
   initShowStore: boolean;
   initShowAgent: boolean;
   toggleStore: (state: boolean) => void;
@@ -66,10 +75,11 @@ class SystemNetworkLegend extends React.PureComponent<SystemNetworkLegendProps, 
   }
 
   render () {
+    const {classes} = this.props;
     const {showStore, showAgent} = this.state;
 
     return (
-      <FormControl component="fieldset">
+      <FormControl component="fieldset" className={classes.root}>
         <FormLabel component="legend">Legend:</FormLabel>
         <FormGroup row>
           <FormControlLabel
@@ -114,4 +124,4 @@ class SystemNetworkLegend extends React.PureComponent<SystemNetworkLegendProps, 
   }
 }
 
-export default SystemNetworkLegend;
+export default withStyles(styles)(SystemNetworkLegend);

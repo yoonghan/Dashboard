@@ -3,6 +3,7 @@
 import * as React from 'react';
 import produce from "immer";
 import Button from '@material-ui/core/Button';
+import {AutoSizer} from 'react-virtualized';
 import SystemNetwork from '../../SystemNetwork';
 import {NodeInfoModal, NodeType, NodeDataModal} from '../../SystemNetwork';
 import SystemNetworkInfo from './SystemNetworkInfo';
@@ -108,14 +109,18 @@ class SystemNetworkControl extends React.PureComponent<{}, SystemNetworkControlS
     const {data, isInputDialogOpen, isInfoOpen, infoDetail} = this.state;
 
     return (
-      <div>
-        <SystemNetwork
-          width={400} height={400}
-          language={"EN"}
-          initData={data}
-          ref={this.systemNetworkRef}
-          nodeClickCallback={this._onClickNode}
-          />
+      <div style={{width: "100%", height: "100%"}}>
+      <AutoSizer>
+        {(({width, height}) => width === 0 || height === 0 ? null : (
+          <SystemNetwork
+            width={(width-4)} height={(height-4)}
+            language={"EN"}
+            initData={data}
+            ref={this.systemNetworkRef}
+            nodeClickCallback={this._onClickNode}
+            />
+          ))}
+        </AutoSizer>
         <Button variant="fab" color="primary" aria-label="Add" onClick={this._onClickAddNetwork}>
           Add
         </Button>
