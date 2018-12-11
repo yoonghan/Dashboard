@@ -5,8 +5,21 @@ import produce from "immer";
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
+import TitleBar from "../../TitleBar";
+import { withStyles, createStyles, WithStyles, Theme } from '@material-ui/core/styles';
 
-interface SystemDetailInformationProps {
+import EventLog from './EventLog';
+import ActiveStatus from "./ActiveStatus";
+import AppliedActivity from "./AppliedActivity";
+import GeneralInfo from './GeneralInfo';
+
+const styles = (theme:Theme) => createStyles({
+  root: {
+    padding: "15px"
+  }
+});
+
+interface SystemDetailInformationProps extends WithStyles<typeof styles> {
 
 }
 
@@ -30,37 +43,50 @@ class SystemDetailInformation extends React.Component<SystemDetailInformationPro
     );
   };
 
+  renderTabByIndex(tabIndex:number) {
+    switch(tabIndex) {
+      case 0:
+        return <GeneralInfo/>
+      case 1:
+        return <ActiveStatus/>
+      case 2:
+        return  <AppliedActivity/>
+      case 3:
+        return <EventLog/>
+      default:
+        return <div>Others</div>
+    }
+  }
 
   render() {
     const {tabSelectedIndex} = this.state;
+    const {classes} = this.props;
 
     return (
       <div>
-        <Typography>
-          System name: Name<br/>
-          System access: OK<br/>
-          System status: OK
+        <TitleBar title={"Server Information"} canClose={true}/>
+        <div className={classes.root}>
+          <Typography>
+            System name: Name<br/>
+            System access: OK<br/>
+            System status: OK
 
-          <br/><br/>
-          ACTIONS
-        </Typography>
-        <Tabs value={tabSelectedIndex} onChange={this.handleTabChange}>
-          <Tab label="General" />
-          <Tab label="Active Status" />
-          <Tab label="Applied Activities" />
-          <Tab label="Event Log" />
-          <Tab label="Inventory" />
-          <Tab label="Service And Support" />
-        </Tabs>
-        {tabSelectedIndex === 0 && <div>Item One</div>}
-        {tabSelectedIndex === 1 && <div>Item Two</div>}
-        {tabSelectedIndex === 2 && <div>Item Three</div>}
-        {tabSelectedIndex === 3 && <div>Item Four</div>}
-        {tabSelectedIndex === 4 && <div>Item Five</div>}
-        {tabSelectedIndex === 5 && <div>Item Six</div>}
+            <br/><br/>
+            ACTIONS
+          </Typography>
+          <Tabs value={tabSelectedIndex} onChange={this.handleTabChange}>
+            <Tab label="General" />
+            <Tab label="Active Status" />
+            <Tab label="Applied Activities" />
+            <Tab label="Event Log" />
+            <Tab label="Inventory" />
+            <Tab label="Service And Support" />
+          </Tabs>
+          {this.renderTabByIndex(tabSelectedIndex)}
+        </div>
       </div>
     );
   }
 }
 
-export default SystemDetailInformation;
+export default withStyles(styles)(SystemDetailInformation);

@@ -7,6 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import ThemeSection from "./ThemeSection";
+import TitleBar from "../../TitleBar";
 
 const styles = (theme:Theme) => createStyles({
   root: {
@@ -25,12 +26,7 @@ interface TSettingProps extends WithStyles<typeof styles> {}
 
 const TSetting: React.SFC<TSettingProps> = ({classes}) => (
   <Grid container spacing={24} className={classes.root}>
-    <Grid item xs={12}>
-      <Typography variant="h5" component="h5">
-        Settings
-        <Divider/>
-      </Typography>
-    </Grid>
+    <TitleBar title="Settings" canClose={true}/>
     <ThemeSection gridPadding={12} sectionStyle={classes.section} elevation={1}/>
   </Grid>
 )

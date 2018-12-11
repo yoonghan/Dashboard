@@ -9,7 +9,7 @@ interface MailBadgeProps {
 
 const MailBadge: React.SFC<MailBadgeProps> = ({count}) => {
   return (
-    <Badge badgeContent={count} color="secondary">
+    <Badge badgeContent={count} color="secondary" className={"tabable"}>
       <MailIcon />
     </Badge>
   );

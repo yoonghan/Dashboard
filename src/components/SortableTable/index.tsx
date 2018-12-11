@@ -135,12 +135,14 @@ class TableWithSort extends React.PureComponent<TableWithSortProp, TableWithSort
                     >
                       {
                         header.map((hm:HeaderModal, idx:number) => {
-                          return (<TableCell
-                            key={`${hm.uniqueDataKey}_${dm.id}`}
-                            numeric={hm.numeric}
-                            >
-                            {dm[hm.uniqueDataKey]}
-                          </TableCell>)
+                          return (
+                            <TableCell
+                              key={`${hm.uniqueDataKey}_${dm.id}`}
+                              numeric={hm.numeric}
+                              >
+                              {dm[hm.uniqueDataKey]}
+                            </TableCell>
+                          )
                         })
                       }
                     </TableRow>

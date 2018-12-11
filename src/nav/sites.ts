@@ -4,6 +4,7 @@ import * as React from 'react';
 import Setting from "../components/routable/Setting";
 import Home from "../components/routable/Home";
 import Inventory from "../components/routable/Inventory";
+import ServerInfo from "../components/routable/ServerInfo";
 
 export interface RouteModal {
   path: string;
@@ -38,5 +39,13 @@ export const routes:Array<RouteModal> = [
     tags: ["home"],
     exact: true,
     component: Home
+  },
+  {
+    path: "/serverinfo",
+    label: "Server Info",
+    keywords: ["inventory", "hardware", "software", "info"],
+    tags: ["inventory"],
+    exact: true,
+    component: ServerInfo
   },
 ];

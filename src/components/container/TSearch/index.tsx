@@ -1,18 +1,18 @@
 `use strict`
 
 import * as React from 'react';
-import produce from "immer";
+import { compose } from 'redux';
 import { Link } from "react-router-dom";
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { withStyles, createStyles, WithStyles, Theme } from '@material-ui/core/styles';
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import { routes, RouteModal } from "../../../nav/sites";
-
+import { SearchConsumer } from "../../../shared/Context";
 
 const styles = (theme:Theme) => createStyles({
   listContainer: {
@@ -21,16 +21,47 @@ const styles = (theme:Theme) => createStyles({
   }
 });
 
-interface TSearchProps extends WithStyles<typeof styles> {
+interface TSearchProps {
   textSearch: string;
 }
+
+interface TSearchPropsWithHoc extends TSearchProps, WithStyles<typeof styles>, RouteComponentProps<any> {}
 
 interface TSearchState {
 }
 
-class TSearch extends React.PureComponent<TSearchProps, TSearchState> {
-  constructor(props:TSearchProps) {
+class TSearch extends React.PureComponent<TSearchPropsWithHoc, TSearchState> {
+  private handleCloseWindow = () => {};
+
+  constructor(props:TSearchPropsWithHoc) {
     super(props);
+  }
+
+  _handleKeyDown = (e:KeyboardEvent) => {
+    console.log(e, "Captured Key")
+
+    switch(e.key) {
+      case "Esc":
+      case "Escape":
+        e.preventDefault();
+        this.handleCloseWindow();
+        break;
+      case "Tab":
+        const className = (e.target as any).className;
+        if(className && className.indexOf("tabable") === -1) {
+          e.preventDefault();
+        }
+        break;
+      default:
+        console.log("Execute");
+    }
+  }
+  componentDidMount() {
+    document.addEventListener("keydown", this._handleKeyDown);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this._handleKeyDown);
   }
 
   _filterMatchedRoutes = () => {
@@ -40,7 +71,7 @@ class TSearch extends React.PureComponent<TSearchProps, TSearchState> {
       return routes;
     }
     else {
-      const lcTextSearch = textSearch.toLowerCase();
+      const lcTextSearch = textSearch.split(":")[0].toLowerCase();
       return routes.filter((route:RouteModal) => {
         const keywords = route.keywords;
         return keywords.some((keyword:string) => {
@@ -50,42 +81,68 @@ class TSearch extends React.PureComponent<TSearchProps, TSearchState> {
     }
   }
 
-  _drawSearches = () => {
+  _renderSearchItem = (handleCloseWindow:()=>void, totalSize:number) => (route:RouteModal, idx: number) => {
+    const {history} = this.props;
+
+    const funcRedirect = () => {
+      history.push(route.path);
+      handleCloseWindow();
+    };
+
+    const isLast = (idx === (totalSize - 1));
+    const blurFunc = (isLast? handleCloseWindow : null);
+
+    return (
+      <ListItem button divider onClick={funcRedirect} onKeyPress={funcRedirect} key={`search_r_${route.path}`} onBlur={blurFunc}>
+        <ListItemText primary={route.label} tabIndex={1001} className={"tabable"}/>
+      </ListItem>
+    );
+  }
+
+  _renderEmptySearchItem = () => {
+    return (
+      <Typography color="error" variant="h6">
+        No Result Found
+      </Typography>
+    );
+  }
+
+  _drawSearches = (handleCloseWindow:()=>void) => {
     const matchedKeywords = this._filterMatchedRoutes();
 
     if(matchedKeywords.length === 0) {
-      return (
-        <Typography color="error" variant="h6">
-          No Result Found
-        </Typography>
-      )
+      return this._renderEmptySearchItem();
     }
 
-    return matchedKeywords.map((route:RouteModal, idx: number) => {
-      return (
-        <React.Fragment key={`search_r_${route.path}`}>
-          { (idx !==0) && <Divider/> }
-          <Link to={route.path}>
-            <ListItem button>
-              <ListItemText primary={route.label} />
-            </ListItem>
-          </Link>
-        </React.Fragment>
-      );
-    });
+    const renderSearchItemFunc = this._renderSearchItem(handleCloseWindow, matchedKeywords.length);
+    return matchedKeywords.map(renderSearchItemFunc);
+  }
+
+  _assignSearchClose = (handleCloseWindow: ()=>void) => {
+    this.handleCloseWindow = handleCloseWindow;
   }
 
   render() {
     const { classes } = this.props;
     return (
-      <List className={classes.listContainer}>
-        <Typography color="textSecondary" variant="caption">
-          Search Result
-        </Typography>
-        {this._drawSearches()}
-      </List>
+      <SearchConsumer>
+      { consumerData => (
+        <List className={classes.listContainer} component="nav">
+          <Typography color="textSecondary" variant="caption">
+            Search Result
+          </Typography>
+          {this._drawSearches(() => consumerData.toggleSearchMode(false))}
+          {this._assignSearchClose(() => consumerData.toggleSearchMode(false))}
+        </List>
+      )}
+      </SearchConsumer>
     )
   }
 }
 
-export default withStyles(styles)(TSearch);
+const enhance = compose<React.SFC<TSearchProps>> (
+  withRouter,
+  withStyles(styles)
+);
+
+export default enhance(TSearch);

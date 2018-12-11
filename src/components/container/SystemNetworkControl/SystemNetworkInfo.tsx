@@ -47,13 +47,14 @@ interface SystemNetworkInfoProps extends WithStyles<typeof styles> {
   hostname: string;
   openSideBar: boolean;
   handleClose: () => void;
+  handleMoreInfoOnClick: () => void;
 }
 
 interface SystemNetworkInfoProps_Formik extends SystemNetworkInfoProps, FormikProps<SystemNetworkInfoInputModal> {
 }
 
 const SystemNetworkInfoForm: React.SFC<SystemNetworkInfoProps_Formik> =
-    ({openSideBar, handleClose, isSubmitting, handleSubmit, errors, values, handleChange, classes}) => {
+    ({openSideBar, handleClose, handleMoreInfoOnClick, isSubmitting, handleSubmit, errors, values, handleChange, classes}) => {
 
   return (
     <Drawer anchor="right" open={openSideBar} onClose={handleClose}>
@@ -65,7 +66,7 @@ const SystemNetworkInfoForm: React.SFC<SystemNetworkInfoProps_Formik> =
           </FormGroup>
           <Divider inset/>
           <FormGroup>
-            <Button variant="contained" color="primary" disabled={isSubmitting}>
+            <Button variant="contained" color="primary" disabled={isSubmitting} onClick={handleMoreInfoOnClick}>
               More Info
             </Button>
             <Divider/>

@@ -61,6 +61,7 @@ class SearchField extends React.PureComponent<SearchFieldProps, {}> {
               <SearchIcon />
             </div>
             <InputBase
+              inputProps={{className:"tabable", tabIndex:1000}}
               placeholder="Search…"
               classes={{
                 root: classes.inputRoot,
@@ -68,6 +69,7 @@ class SearchField extends React.PureComponent<SearchFieldProps, {}> {
               }}
               type={"search"}
               onFocus={()=>consumerData.toggleSearchMode(true)}
+              onKeyDown={()=>consumerData.toggleSearchMode(true)}
               onChange={this.onSearchTextChange(consumerData.changeSearchText)}
             />
           </div>

@@ -2,7 +2,9 @@
 
 import * as React from 'react';
 import produce from "immer";
+import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
+import { withStyles, createStyles, WithStyles, Theme } from '@material-ui/core/styles';
 import {AutoSizer} from 'react-virtualized';
 import SystemNetwork from '../../SystemNetwork';
 import {NodeInfoModal, NodeType, NodeDataModal} from '../../SystemNetwork';
@@ -10,6 +12,23 @@ import SystemNetworkInfo from './SystemNetworkInfo';
 import {SystemNetworkInfoInputModal} from './SystemNetworkInfo';
 import SystemNetworkControlInput from './SystemNetworkControlInput';
 import {SystemNetworkControlInputModal} from './SystemNetworkControlInput';
+
+const buttonPosition= "20px";
+const styles = (theme:Theme) => createStyles({
+  root: {
+    width: "100%",
+    height: "calc(100vh - 64px)"
+  },
+  addButton: {
+    right: buttonPosition,
+    bottom: buttonPosition,
+    position: 'absolute'
+  }
+});
+
+interface SystemNetworkControlProps extends WithStyles<typeof styles> {
+  handleMoreInfoOnClick: ()=>void;
+}
 
 interface SystemNetworkControlState {
   data: NodeDataModal;
@@ -19,7 +38,7 @@ interface SystemNetworkControlState {
   infoDetail: SystemNetworkInfoInputModal;
 }
 
-class SystemNetworkControl extends React.PureComponent<{}, SystemNetworkControlState> {
+class SystemNetworkControl extends React.PureComponent<SystemNetworkControlProps, SystemNetworkControlState> {
   private systemNetworkRef = React.createRef<SystemNetwork>();
   private counter = 0;
 
@@ -106,14 +125,15 @@ class SystemNetworkControl extends React.PureComponent<{}, SystemNetworkControlS
   }
 
   render() {
+    const {classes, handleMoreInfoOnClick} = this.props;
     const {data, isInputDialogOpen, isInfoOpen, infoDetail} = this.state;
 
     return (
-      <div style={{width: "100%", height: "100%"}}>
-      <AutoSizer>
+      <div className={classes.root}>
+        <AutoSizer>
         {(({width, height}) => width === 0 || height === 0 ? null : (
           <SystemNetwork
-            width={(width-4)} height={(height-4)}
+            width={(width-5)} height={(height-5)}
             language={"EN"}
             initData={data}
             ref={this.systemNetworkRef}
@@ -121,8 +141,14 @@ class SystemNetworkControl extends React.PureComponent<{}, SystemNetworkControlS
             />
           ))}
         </AutoSizer>
-        <Button variant="fab" color="primary" aria-label="Add" onClick={this._onClickAddNetwork}>
-          Add
+        <Button
+          variant="fab"
+          color="secondary"
+          aria-label="Add"
+          className={classes.addButton}
+          onClick={this._onClickAddNetwork}
+          >
+          <AddIcon/>
         </Button>
         <SystemNetworkControlInput
           openDialog={isInputDialogOpen}
@@ -132,6 +158,7 @@ class SystemNetworkControl extends React.PureComponent<{}, SystemNetworkControlS
         <SystemNetworkInfo
           openSideBar={isInfoOpen}
           handleClose={this._handleInfoClose}
+          handleMoreInfoOnClick={handleMoreInfoOnClick}
           {...infoDetail}
           />
       </div>
@@ -139,4 +166,4 @@ class SystemNetworkControl extends React.PureComponent<{}, SystemNetworkControlS
   }
 }
 
-export default SystemNetworkControl;
+export default withStyles(styles)(SystemNetworkControl);

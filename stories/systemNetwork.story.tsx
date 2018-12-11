@@ -50,7 +50,7 @@ storiesOf('Chart', module)
     <SystemNetworkWithTheme {...networkData} nodeClickCallback={(data:NodeInfoModal)=>{console.log(data)}}/>
   ))
   .add('Controlled Chained Network', () => (
-    <SystemNetworkControlWithTheme/>
+    <div style={{width:"100%", height:"400px"}}><SystemNetworkControlWithTheme/></div>
   ))
   .add('Network Input', () => (
     <SystemNetworkControlInputWithTheme
@@ -66,6 +66,7 @@ storiesOf('Chart', module)
       hostname={"Hostname"}
       openSideBar={true}
       handleClose={()=>{alert("Consider Close")}}
+      handleMoreInfoOnClick={()=>{alert("Handle More Info")}}
       />
   ))
   ;

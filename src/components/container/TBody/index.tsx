@@ -11,7 +11,7 @@ import TSearch from "../TSearch";
 const styles = (theme:Theme) => createStyles({
   root: {
     position: "relative",
-    height: "calc(100% - 64px)"
+    minHeight: "calc(100vh - 64px)"
   },
   modalContainer: {
     top: 0,
