@@ -1,5 +1,6 @@
 import *as React from 'react';
 import { storiesOf } from '@storybook/react';
+import {EnumSelectType} from '../src/components/SortableTable/shared';
 import SortableTable from '../src/components/SortableTable';
 
 const data = [
@@ -31,4 +32,10 @@ storiesOf('Tables', module)
   ))
   .add('Sortable Table', () => (
     <SortableTable data={data} header={header} withPagination={false}/>
+  ))
+  .add('Sortable Table w/ Checkbox', () => (
+    <SortableTable data={data} header={header} withPagination={false} withSelection={EnumSelectType.CHECKBOX}/>
+  ))
+  .add('Sortable Table w/ Radio', () => (
+    <SortableTable data={data} header={header} withPagination={true} withSelection={EnumSelectType.RADIO}/>
   ));

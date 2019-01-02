@@ -6,8 +6,10 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
-import ThemeSection from "./ThemeSection";
 import TitleBar from "../../TitleBar";
+import ThemeSection from "./ThemeSection";
+import DisplaySection from "./DisplaySection";
+import LanguageSection from "./LanguageSection";
 
 const styles = (theme:Theme) => createStyles({
   root: {
@@ -28,6 +30,8 @@ const TSetting: React.SFC<TSettingProps> = ({classes}) => (
   <Grid container spacing={24} className={classes.root}>
     <TitleBar title="Settings" canClose={true}/>
     <ThemeSection gridPadding={12} sectionStyle={classes.section} elevation={1}/>
+    <DisplaySection gridPadding={12} sectionStyle={classes.section} elevation={1}/>
+    <LanguageSection gridPadding={12} sectionStyle={classes.section} elevation={1}/>
   </Grid>
 )
 

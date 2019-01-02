@@ -14,6 +14,7 @@ interface DashboardProps extends RouteComponentProps<any> {
 }
 
 interface DashboardState {
+  isCompact: boolean;
   theme: ThemeTypes;
   inSearchMode: boolean;
   searchText: string;
@@ -23,6 +24,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
   constructor(props:DashboardProps) {
     super(props);
     this.state = {
+      isCompact: false,
       theme: DEFAULT_THEME,
       inSearchMode: false,
       searchText: ""
@@ -45,6 +47,14 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     );
   }
 
+  _changeCompact = (isCompact: boolean) => {
+    this.setState(
+      produce<DashboardState>(draft => {
+        draft.isCompact = isCompact;
+      })
+    );
+  }
+
   _changeSearchText = (searchText: string) => {
     this.setState(
       produce<DashboardState>(draft => {
@@ -53,22 +63,47 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     );
   }
 
-  _onClickSetting = () => {
+  _jumpPage = (location:string) => {
     const {history} = this.props;
 
     this.setState(
       produce<DashboardState>(draft => {
         draft.inSearchMode = false;
-        history.push("setting");
+        history.push(location);
+      })
+    );
+  }
+
+  _onClickSetting = () => {
+    this._jumpPage("/setting");
+  }
+
+  _onClickNotification = () => {
+    this._jumpPage("/notification/mail");
+  }
+
+  _onClickAlert= () => {
+    this._jumpPage("/notification/alert");
+  }
+
+  _onClickWarning = () => {
+    const {history} = this.props;
+
+    this.setState(
+      produce<DashboardState>(draft => {
+        draft.inSearchMode = false;
+        history.push("/notification/warning");
       })
     );
   }
 
   render() {
-    const {theme, inSearchMode, searchText} = this.state;
+    const {theme, inSearchMode, isCompact, searchText} = this.state;
     return (
       <DashboardProvider value={
         {
+          isCompact: isCompact,
+          changeCompact: this._changeCompact,
           theme: theme,
           changeTheme: this._changeTheme
         }
@@ -84,9 +119,10 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
             }
           }>
             <TAppBar
-              onClickMail={()=>{}}
               onClickSetting={this._onClickSetting}
-              onClickNotification={()=>{}}
+              onClickNotification={this._onClickNotification}
+              onClickAlert={this._onClickAlert}
+              onClickWarning={this._onClickWarning}
               />
             <TBody/>
           </SearchProvider>

@@ -7,7 +7,7 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import TableRow from '../../../TableRow';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -18,6 +18,8 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ButtonGroup from "../../../ButtonGroup";
+import PanelTitleBar from "../../../PanelTitleBar";
+import {EnumTitleType} from "../../../PanelTitleBar";
 
 const styles = (theme:Theme) => createStyles({
   root: {
@@ -25,6 +27,12 @@ const styles = (theme:Theme) => createStyles({
   editBtn: {
     margin: theme.spacing.unit * 4,
     marginTop: 0
+  },
+  expansionPanelSummary: {
+    padding: 0
+  },
+  expansionPanelSummaryTitle: {
+    margin: "0 !important"
   }
 });
 
@@ -47,7 +55,7 @@ class Location extends React.PureComponent<LocationProps, LocationState> {
 
   componentDidUpdate(prevProp:LocationProps, prevState:LocationState) {
     if(!prevState.isEditMode) {
-    
+
       window.scrollTo(
         {
           top: (this.scrollToEditLocation as any).current.offsetTop,
@@ -121,8 +129,10 @@ class Location extends React.PureComponent<LocationProps, LocationState> {
     return (
       <form ref={this.scrollToEditLocation}>
         <ExpansionPanel>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-            <Typography>Location</Typography>
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>} className={classes.expansionPanelSummary} classes={{
+            content: classes.expansionPanelSummaryTitle
+          }}>
+            <PanelTitleBar titleType={EnumTitleType.EXPANSION}>Location</PanelTitleBar>
           </ExpansionPanelSummary>
 
           <ExpansionPanelDetails>

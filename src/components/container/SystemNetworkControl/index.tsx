@@ -44,10 +44,72 @@ class SystemNetworkControl extends React.PureComponent<SystemNetworkControlProps
 
   constructor(props: any) {
     super(props);
+    const listOfNodes:Array<NodeInfoModal> = [];
+    const listOfLinks:Array<any> = [];
+    for(let i = 0; i < 40; i+=10) {
+      listOfNodes.push(
+        { name: `Node ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.MASTER, group: `${i}` }
+      );
+      listOfNodes.push(
+        { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
+      );
+      listOfNodes.push(
+        { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
+      );
+      listOfNodes.push(
+        { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
+      );
+      listOfNodes.push(
+        { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
+      );
+      listOfNodes.push(
+        { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
+      );
+      listOfNodes.push(
+        { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
+      );
+      listOfNodes.push(
+        { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
+      );
+      listOfNodes.push(
+        { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
+      );
+      listOfNodes.push(
+        { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
+      );
+      listOfLinks.push(
+        { source: i+1, target: i }
+      );
+      listOfLinks.push(
+        { source: i+2, target: i }
+      );
+      listOfLinks.push(
+        { source: i+3, target: i }
+      );
+      listOfLinks.push(
+        { source: i+4, target: i }
+      );
+      listOfLinks.push(
+        { source: i+5, target: i }
+      );
+      listOfLinks.push(
+        { source: i+6, target: i }
+      );
+      listOfLinks.push(
+        { source: i+7, target: i }
+      );
+      listOfLinks.push(
+        { source: i+8, target: i }
+      );
+      listOfLinks.push(
+        { source: i+9, target: i }
+      );
+    }
+
     this.state = {
       data: {
-        nodes: [],
-        links: []
+        nodes: listOfNodes,
+        links: listOfLinks
       },
       counter: 0,
       isInputDialogOpen: false,

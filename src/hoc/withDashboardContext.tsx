@@ -5,6 +5,8 @@ import { DashboardConsumer, TDashboardContext } from "../shared/Context";
 export interface WithDashboardContext {
   theme?: ThemeTypes;
   changeTheme?: (theme: ThemeTypes) => void;
+  isCompact?: boolean;
+  changeCompact?: (isCompact: boolean) => void;
 };
 
 /**

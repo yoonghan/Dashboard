@@ -11,7 +11,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { withStyles, createStyles, WithStyles, Theme } from '@material-ui/core/styles';
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import { routes, RouteModal } from "../../../nav/sites";
+import { routes as nonFilteredRoutes, RouteModal } from "../../../nav/sites";
 import { SearchConsumer } from "../../../shared/Context";
 
 const styles = (theme:Theme) => createStyles({
@@ -32,14 +32,20 @@ interface TSearchState {
 
 class TSearch extends React.PureComponent<TSearchPropsWithHoc, TSearchState> {
   private handleCloseWindow = () => {};
+  private routes:Array<RouteModal> = null;
 
   constructor(props:TSearchPropsWithHoc) {
     super(props);
+    this.routes = this._filterMenuRoutes();
+  }
+
+  _filterMenuRoutes = () => {
+    return nonFilteredRoutes.filter(route => {
+      return (!route.isNotMenuItem);
+    });
   }
 
   _handleKeyDown = (e:KeyboardEvent) => {
-    console.log(e, "Captured Key")
-
     switch(e.key) {
       case "Esc":
       case "Escape":
@@ -68,11 +74,11 @@ class TSearch extends React.PureComponent<TSearchPropsWithHoc, TSearchState> {
     const {textSearch} = this.props;
 
     if(textSearch === "") {
-      return routes;
+      return this.routes;
     }
     else {
       const lcTextSearch = textSearch.split(":")[0].toLowerCase();
-      return routes.filter((route:RouteModal) => {
+      return this.routes.filter((route:RouteModal) => {
         const keywords = route.keywords;
         return keywords.some((keyword:string) => {
           return (keyword.indexOf(lcTextSearch) > -1)

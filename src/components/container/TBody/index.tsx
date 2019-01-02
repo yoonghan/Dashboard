@@ -71,7 +71,7 @@ class TBody extends React.Component<TBodyProps, TBodyState> {
                     exact={route.exact}
                     component={route.component}
                     key={`tbody_${route.path}`}/>
-                )
+                );
               })
             }
             <Route component={NotFound} />

@@ -5,9 +5,9 @@ import { Theme } from '@material-ui/core/styles';
 import { DEFAULT_THEME, THEMES_AVAILABLE, ThemeTypes } from '../const/theme';
 
 export interface TDashboardContext {
+  isCompact: boolean;
+  changeCompact: (isCompact: boolean) => void;
   theme: ThemeTypes;
-  //language:;
-  //changeLanguage;
   changeTheme: (theme: ThemeTypes) => void;
 }
 
@@ -20,6 +20,8 @@ export interface TSearchContext {
 }
 
 const dashboardContext = React.createContext<TDashboardContext>({
+                            isCompact: false,
+                            changeCompact: (isCompact: boolean) => {},
                             theme: DEFAULT_THEME,
                             changeTheme: (theme: string) => {}
                           });

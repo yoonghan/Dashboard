@@ -22,5 +22,5 @@ storiesOf('Button', module)
       <Button color="secondary" aria-label="Cancel" variant={"contained"}>
         Cancel
       </Button>
-    </ButtonGroup>
+    </ButtonGroup> 
   ));

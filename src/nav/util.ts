@@ -1,4 +1,4 @@
-import { routes } from "./sites";
+import { routes, RouteModal } from "./sites";
 
 export interface DomRouteModal {
   path: string,
@@ -7,7 +7,8 @@ export interface DomRouteModal {
 }
 
 export const getRouteList = ():Array<DomRouteModal> => {
-  return routes.map((route):DomRouteModal => {
+  return routes
+    .map((route):DomRouteModal => {
     return ({
       path: route.path,
       exact: route.exact,

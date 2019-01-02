@@ -7,7 +7,7 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import TableRow from '../../../TableRow';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -18,6 +18,8 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ButtonGroup from "../../../ButtonGroup";
+import PanelTitleBar from "../../../PanelTitleBar";
+import {EnumTitleType} from "../../../PanelTitleBar";
 
 const styles = (theme:Theme) => createStyles({
   root: {
@@ -25,6 +27,12 @@ const styles = (theme:Theme) => createStyles({
   editBtn: {
     margin: theme.spacing.unit * 4,
     marginTop: 0
+  },
+  expansionPanelSummary: {
+    padding: 0
+  },
+  expansionPanelSummaryTitle: {
+    margin: "0 !important"
   }
 });
 
@@ -120,9 +128,11 @@ class ComputerInformation extends React.PureComponent<ComputerInformationProps, 
 
     return (
       <form ref={this.scrollToEditLocation}>
-        <ExpansionPanel expanded>
-          <ExpansionPanelSummary>
-            <Typography>Computer information</Typography>
+        <ExpansionPanel expanded >
+          <ExpansionPanelSummary className={classes.expansionPanelSummary} classes={{
+            content: classes.expansionPanelSummaryTitle
+          }}>
+            <PanelTitleBar titleType={EnumTitleType.EXPANSION}>Computer information</PanelTitleBar>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <Table>
