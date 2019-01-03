@@ -23,7 +23,7 @@ import Detail from "./Detail";
 
 const styles = (theme:Theme) => createStyles({
   root: {
-
+    ...theme.mixins.gutters()
   },
   paper: {
     ...theme.mixins.gutters(),
@@ -70,9 +70,9 @@ const TNotificationAlertForm: React.SFC<TNotificationAlertFormProps> = ({classes
   const rowsPerPage = 5;
 
   return (
-    <Grid container className={classes.root}>
+    <Grid container>
       <TitleBar title="System Alert" canClose={true}/>
-      <Grid item xs={12}>
+      <Grid item xs={12} className={classes.root}>
         <Paper className={classes.paper}>
           <Typography variant="body2">
             View the active status reported for all discovered system.

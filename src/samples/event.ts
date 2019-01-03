@@ -1,0 +1,61 @@
+export const EVENT_MEMORY_FAIL = {
+  "Event":
+  {
+    "ComponentType":"Memory",
+    "ConditionValue":"Warn",
+    "eventAttributes":1,
+    "Message":"Observed Attribute: Memory Utilization, Threshold: 90.0, Average Value: 91.409, since Mon Dec 17 12:18:53 SGT 2018",
+    "UserData":
+    {
+      "Map":
+      {
+        "MapEntry":[
+          {
+            "MapEntryKey":{"string":"Trigger"},
+            "MapEntryValue":{"double":91.4}
+          },
+          {
+            "MapEntryKey":{"string":"Observed metric"},
+            "MapEntryValue":{"string":"Memory Utilization"}
+          },
+          {
+            "MapEntryKey":{"string":"MonitorID"},
+            "MapEntryValue":{"string":"WinMemoryUtil"}
+          },
+          {
+            "MapEntryKey":{"string":"Threshold"},
+            "MapEntryValue":{"double":90}
+          }
+        ]
+      }
+    },
+    "Severity":10,
+    "OriginatingMO":{
+      "deviceType":17,
+      "agentID":"Store01-LAPTOP-QM1C0GQP",
+      "systemID":"ma-LAPTOP-QM1C0GQP.10150",
+      "agentType":1,
+      "mgmtPort":10150,
+      "agentVersion":22,
+      "storeID":"Store01",
+      "IPAddress":"192.168.169.1",
+      "deviceID":"LAPTOP-QM1C0GQP"
+    },
+    "TimeStamp":1545020333424,
+    "Array":{
+      "numRecs":5,
+      "Qualifier":[
+        "Retail","Monitor","Memory","Utilization","Warn"
+      ],
+      "type":"Qualifier"
+    },
+    "EventFamily":"",
+    "EventSender":"",
+    "ConditionType":"Utilization",
+    "CompCategoryArray":{
+      "numRecs":2,
+      "ComponentCategories":["Retail","Monitor"],
+      "type":"ComponentCategories"
+    }
+  }
+}

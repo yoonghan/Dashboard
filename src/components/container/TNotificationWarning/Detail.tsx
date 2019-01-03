@@ -13,6 +13,7 @@ import { withStyles, createStyles, WithStyles, Theme } from '@material-ui/core/s
 import TableRow from '../../TableRow';
 import SortableTable from '../../SortableTable';
 import {SelectableTableType} from '../../SortableTable';
+import {EVENT_MEMORY_FAIL} from "../../../samples/event";
 
 const styles = (theme:Theme) => createStyles({
   root: {
@@ -24,85 +25,62 @@ const styles = (theme:Theme) => createStyles({
 interface AlertDetailProps extends WithStyles<typeof styles> {
 }
 
+interface MapEntryValueModal {
+  [key:string]: string|number;
+}
+
+interface MapEntryKeyModal {
+  [key:string]: string;
+}
+
+interface MapEntryModal {
+  MapEntryKey: MapEntryKeyModal;
+  MapEntryValue: MapEntryValueModal;
+}
+
 const AlertDetail: React.SFC<AlertDetailProps> = ({classes}) => {
+  const response = EVENT_MEMORY_FAIL;
+
+  function mapEntry(entries:Array<MapEntryModal>) {
+    return entries.map((entry:MapEntryModal) => {
+      return (
+        <TableRow>
+          <TableCell>{entry.MapEntryKey["string"]}</TableCell>
+          <TableCell>{entry.MapEntryValue["string"] || entry.MapEntryValue["double"]}</TableCell>
+        </TableRow>
+      )
+    });
+  }
 
   return (
     <Paper className={classes.root}>
-      <Typography variant="subtitle1">Detail - HardCoded</Typography>
+      <Typography variant="subtitle1">Detail</Typography>
       <Divider/>
       <Table>
         <TableBody>
           <TableRow>
-            <TableCell>Set Description</TableCell>
-            <TableCell>BOSS Replication Capture control critical Status set</TableCell>
-          </TableRow>
-          <TableRow>
             <TableCell>System</TableCell>
-            <TableCell>BOSS</TableCell>
+            <TableCell>{response.Event.OriginatingMO.systemID}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Component</TableCell>
-            <TableCell>BOSS</TableCell>
+            <TableCell>{response.Event.ComponentType}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>Instance Id</TableCell>
-            <TableCell></TableCell>
+            <TableCell>Condition Type</TableCell>
+            <TableCell>{response.Event.ConditionType}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>Category</TableCell>
-            <TableCell>Hardware Status</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Category Description</TableCell>
-            <TableCell>Hardware Status</TableCell>
+            <TableCell>Condition Qualifier</TableCell>
+            <TableCell>{response.Event.Array.Qualifier.map((val) => `${val}, `)}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Details</TableCell>
-            <TableCell>Unable to get DB Connection</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Time timeReceived</TableCell>
-            <TableCell>Dec 10, 2018 12:13:51 PM</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Auto-Clear</TableCell>
-            <TableCell>False</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Persistence</TableCell>
-            <TableCell>True</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Event Date and Time</TableCell>
-            <TableCell>Dec 10, 2018 12:13:51 PM</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Event Component Type</TableCell>
-            <TableCell>BOSS Replication</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Event Component Category</TableCell>
-            <TableCell>Retail\SelfCheckout\BOSS</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Event Component Instance</TableCell>
-            <TableCell></TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Event Condition</TableCell>
-            <TableCell>Capture Control</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Event Condition Value</TableCell>
-            <TableCell>Failed</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Event Text</TableCell>
-            <TableCell>Unable to get DB Connection</TableCell>
+            <TableCell>{response.Event.Message}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Event Source</TableCell>
-            <TableCell>BOSS</TableCell>
+            <TableCell>{response.Event.OriginatingMO.IPAddress}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell>Event Category</TableCell>
@@ -110,12 +88,9 @@ const AlertDetail: React.SFC<AlertDetailProps> = ({classes}) => {
           </TableRow>
           <TableRow>
             <TableCell>Event Sender Name</TableCell>
-            <TableCell>Store01-BOSS</TableCell>
+            <TableCell>{response.Event.OriginatingMO.agentID}</TableCell>
           </TableRow>
-          <TableRow>
-            <TableCell>Event Detail</TableCell>
-            <TableCell>Unable to get connection to database initializing replication</TableCell>
-          </TableRow>
+          {mapEntry(response.Event.UserData.Map.MapEntry)}
         </TableBody>
       </Table>
     </Paper>
