@@ -12,8 +12,8 @@ import Typography from '@material-ui/core/Typography';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import { DashboardConsumer } from "../../../shared/Context";
-import {withDashboardContext, WithDashboardContext} from "../../../hoc/withDashboardContext";
+import { DashboardConsumer } from "../../../../shared/Context";
+import {withDashboardContext, WithDashboardContext} from "../../../../hoc/withDashboardContext";
 
 interface DisplaySectionProps extends WithDashboardContext {
   gridPadding: (boolean | "auto" | 2 | 1 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12),

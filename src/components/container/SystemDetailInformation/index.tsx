@@ -20,11 +20,13 @@ import amber from '@material-ui/core/colors/amber';
 import red from '@material-ui/core/colors/red';
 
 import TitleBar from "../../TitleBar";
+import ButtonPopupMenu from "../../ButtonPopupMenu";
 import EventLog from './EventLog';
 import ActiveStatus from "./ActiveStatus";
 import AppliedActivity from "./AppliedActivity";
 import GeneralInfo from './GeneralInfo';
 import Inventory from './Inventory';
+import Statistics from './Statistics';
 
 const styles = (theme:Theme) => createStyles({
   root: {
@@ -78,7 +80,7 @@ class SystemDetailInformation extends React.Component<SystemDetailInformationPro
     }
   }
 
-  handleTabChange = (event:React.ChangeEvent<HTMLElement>, tabIdx:number) => {
+  _handleTabChange = (event:React.ChangeEvent<HTMLElement>, tabIdx:number) => {
     this.setState(
       produce<SystemDetailInformationState>(draft => {
         draft.tabSelectedIndex = tabIdx;
@@ -86,7 +88,7 @@ class SystemDetailInformation extends React.Component<SystemDetailInformationPro
     );
   };
 
-  renderTabByIndex(tabIndex:number) {
+  _renderTabByIndex = (tabIndex:number) => {
     switch(tabIndex) {
       case 0:
         return <GeneralInfo/>
@@ -96,8 +98,10 @@ class SystemDetailInformation extends React.Component<SystemDetailInformationPro
         return  <AppliedActivity/>
       case 3:
         return <EventLog/>
-      default:
+      case 4:
         return <Inventory/>
+      default:
+        return <Statistics/>
     }
   }
 
@@ -128,19 +132,37 @@ class SystemDetailInformation extends React.Component<SystemDetailInformationPro
                     <SnackbarContent message="With some issues" className={classes.statusWarning}/>
                   </TableCell>
                 </TableRow>
+                <TableRow>
+                  <TableCell className={classes.displayLabel}>Actions:</TableCell>
+                  <TableCell className={classes.displayValue}>
+                    <ButtonPopupMenu
+                      id = "actions"
+                      btnLabel = "Actions..."
+                      options = {
+                        [
+                          { label: "Shutdown", handleClick: () => {} },
+                          { label: "Restart", handleClick: () => {} },
+                          { label: "Suspend", handleClick: () => {} },
+                          { label: "Wakeup on Lan", handleClick: () => {} }
+                        ]
+                      }
+                    />
+                  </TableCell>
+                </TableRow>
               </TableBody>
             </Table>
           </div>
           <AppBar position="static" color="default" className={classes.appBar}>
-            <Tabs value={tabSelectedIndex} onChange={this.handleTabChange} >
+            <Tabs value={tabSelectedIndex} onChange={this._handleTabChange} >
               <Tab label="General" />
               <Tab label="Active Status" />
               <Tab label="Applied Activities" />
               <Tab label="Event Log" />
               <Tab label="Inventory" />
+              <Tab label="Statistics" />
             </Tabs>
           </AppBar>
-          {this.renderTabByIndex(tabSelectedIndex)}
+          {this._renderTabByIndex(tabSelectedIndex)}
         </div>
       </div>
     );

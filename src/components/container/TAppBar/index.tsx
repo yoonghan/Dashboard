@@ -62,10 +62,10 @@ const TAppBar: React.SFC<TAppBarProps> = ({ classes, onClickSetting, onClickNoti
           </Link>
         </Typography>
         <SearchField/>
-        <IconButton color="inherit" onClick={onClickAlert} className={classes.iconBtn}>
+        <IconButton color="inherit" onClick={onClickAlert}>
           <AlertBadge count={1}/>
         </IconButton>
-        <IconButton color="inherit" onClick={onClickWarning} className={classes.iconBtn}>
+        <IconButton color="inherit" onClick={onClickWarning}>
           <WarningBadge count={13}/>
         </IconButton>
         <IconButton color="inherit" onClick={onClickNotification}>

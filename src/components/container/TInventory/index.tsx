@@ -38,7 +38,7 @@ class TInventory extends React.PureComponent<TInventoryProps, TInventoryState> {
 
     return (
       <React.Fragment>
-        <TitleBar title="Inventory" canClose={true}/>
+        <TitleBar title="Inventory" canClose={false}/>
         <div className={classes.root}>
           <ExpansionPanel expanded >
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>} className={classes.expansionPanelSummary} classes={{

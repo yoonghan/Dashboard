@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import {withDashboardContext, WithDashboardContext} from "../../../hoc/withDashboardContext";
+import {withDashboardContext, WithDashboardContext} from "../../../../hoc/withDashboardContext";
 
 interface LanguageSectionProps extends WithDashboardContext {
   gridPadding: (boolean | "auto" | 2 | 1 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12),

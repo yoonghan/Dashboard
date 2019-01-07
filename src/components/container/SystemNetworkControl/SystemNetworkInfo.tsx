@@ -13,10 +13,12 @@ import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import Chip from '@material-ui/core/Chip';
 import { withStyles, createStyles, WithStyles, Theme } from '@material-ui/core/styles';
-import {isIPAddressValid} from '../../../const/validatorRegex';
 import { withFormik, FormikProps, FormikErrors, FormikBag } from 'formik';
 
 import green from '@material-ui/core/colors/green';
+
+import {isIPAddressValid} from '../../../const/validatorRegex';
+import ButtonPopupMenu from "../../ButtonPopupMenu";
 
 const height = 32;
 const styles = (theme:Theme) => createStyles({
@@ -69,6 +71,19 @@ const SystemNetworkInfoForm: React.SFC<SystemNetworkInfoProps_Formik> =
             <Button variant="contained" color="primary" disabled={isSubmitting} onClick={handleMoreInfoOnClick}>
               More Info
             </Button>
+
+            <ButtonPopupMenu
+              id = "actions"
+              btnLabel = "Actions..."
+              options = {
+                [
+                  { label: "Shutdown", handleClick: () => {} },
+                  { label: "Restart", handleClick: () => {} },
+                  { label: "Suspend", handleClick: () => {} },
+                  { label: "Wakeup on Lan", handleClick: () => {} }
+                ]
+              }
+            />
             <Divider/>
             <TextField
               required
@@ -103,6 +118,9 @@ const SystemNetworkInfoForm: React.SFC<SystemNetworkInfoProps_Formik> =
             />
             <Button variant="contained" color="primary" type="submit" disabled={isSubmitting}>
               Update
+            </Button>
+            <Button variant="contained" color="secondary" type="submit" disabled={isSubmitting}>
+              Remove
             </Button>
           </FormGroup>
         </FormControl>

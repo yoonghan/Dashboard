@@ -3,25 +3,34 @@
 import * as React from 'react';
 import produce from "immer";
 import AddIcon from '@material-ui/icons/Add';
+import TableChartIcon from '@material-ui/icons/TableChart';
+import ScatterPlotIcon from '@material-ui/icons/ScatterPlot';
 import Button from '@material-ui/core/Button';
 import { withStyles, createStyles, WithStyles, Theme } from '@material-ui/core/styles';
 import {AutoSizer} from 'react-virtualized';
+import SystemInTableView from './SystemInTableView';
 import SystemNetwork from '../../SystemNetwork';
 import {NodeInfoModal, NodeType, NodeDataModal} from '../../SystemNetwork';
 import SystemNetworkInfo from './SystemNetworkInfo';
 import {SystemNetworkInfoInputModal} from './SystemNetworkInfo';
 import SystemNetworkControlInput from './SystemNetworkControlInput';
 import {SystemNetworkControlInputModal} from './SystemNetworkControlInput';
+import {sampleLinkedNodes, sampleNodes} from '../../../samples/network';
 
-const buttonPosition= "20px";
+const buttonPosition= 20;
 const styles = (theme:Theme) => createStyles({
   root: {
     width: "100%",
     height: "calc(100vh - 64px)"
   },
   addButton: {
-    right: buttonPosition,
-    bottom: buttonPosition,
+    right: buttonPosition + "px",
+    bottom: buttonPosition + "px",
+    position: 'absolute'
+  },
+  viewButton: {
+    right: (buttonPosition * 4) + "px",
+    bottom: buttonPosition + "px",
     position: 'absolute'
   }
 });
@@ -31,6 +40,7 @@ interface SystemNetworkControlProps extends WithStyles<typeof styles> {
 }
 
 interface SystemNetworkControlState {
+  isTableView: boolean;
   data: NodeDataModal;
   counter: number;
   isInputDialogOpen: boolean;
@@ -44,69 +54,11 @@ class SystemNetworkControl extends React.PureComponent<SystemNetworkControlProps
 
   constructor(props: any) {
     super(props);
-    const listOfNodes:Array<NodeInfoModal> = [];
-    const listOfLinks:Array<any> = [];
-    for(let i = 0; i < 40; i+=10) {
-      listOfNodes.push(
-        { name: `Node ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.MASTER, group: `${i}` }
-      );
-      listOfNodes.push(
-        { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
-      );
-      listOfNodes.push(
-        { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
-      );
-      listOfNodes.push(
-        { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
-      );
-      listOfNodes.push(
-        { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
-      );
-      listOfNodes.push(
-        { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
-      );
-      listOfNodes.push(
-        { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
-      );
-      listOfNodes.push(
-        { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
-      );
-      listOfNodes.push(
-        { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
-      );
-      listOfNodes.push(
-        { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
-      );
-      listOfLinks.push(
-        { source: i+1, target: i }
-      );
-      listOfLinks.push(
-        { source: i+2, target: i }
-      );
-      listOfLinks.push(
-        { source: i+3, target: i }
-      );
-      listOfLinks.push(
-        { source: i+4, target: i }
-      );
-      listOfLinks.push(
-        { source: i+5, target: i }
-      );
-      listOfLinks.push(
-        { source: i+6, target: i }
-      );
-      listOfLinks.push(
-        { source: i+7, target: i }
-      );
-      listOfLinks.push(
-        { source: i+8, target: i }
-      );
-      listOfLinks.push(
-        { source: i+9, target: i }
-      );
-    }
+    const listOfNodes:Array<NodeInfoModal> = sampleNodes;
+    const listOfLinks:Array<any> = sampleLinkedNodes;
 
     this.state = {
+      isTableView: true,
       data: {
         nodes: listOfNodes,
         links: listOfLinks
@@ -165,6 +117,14 @@ class SystemNetworkControl extends React.PureComponent<SystemNetworkControlProps
     );
   }
 
+  _onClickViewNetwork = () => {
+    this.setState(
+      produce<SystemNetworkControlState>(draft => {
+        draft.isTableView = !draft.isTableView;
+      })
+    );
+  }
+
   _onClickNode = (data: NodeInfoModal) => {
     this.setState(
       produce<SystemNetworkControlState>(draft => {
@@ -186,28 +146,69 @@ class SystemNetworkControl extends React.PureComponent<SystemNetworkControlProps
     );
   }
 
+  _renderDisplay = () => {
+    const {classes} = this.props;
+    const {data, isTableView} = this.state;
+
+    if(isTableView) {
+      return (
+        <React.Fragment>
+          <SystemInTableView/>
+
+          <Button
+            variant="fab"
+            color="primary"
+            aria-label="View"
+            className={classes.addButton}
+            onClick={this._onClickViewNetwork}
+            >
+            <ScatterPlotIcon/>
+          </Button>
+        </React.Fragment>
+      )
+    }
+    else {
+      return (
+        <React.Fragment>
+          <AutoSizer>
+          {(({width, height}) => width === 0 || height === 0 ? null : (
+            <SystemNetwork
+              width={(width-5)} height={(height-5)}
+              language={"EN"}
+              initData={data}
+              ref={this.systemNetworkRef}
+              nodeClickCallback={this._onClickNode}
+              />
+            ))}
+          </AutoSizer>
+
+          <Button
+            variant="fab"
+            color="primary"
+            aria-label="View"
+            className={classes.addButton}
+            onClick={this._onClickViewNetwork}
+            >
+            <TableChartIcon/>
+          </Button>
+        </React.Fragment>
+      )
+    }
+
+  }
+
   render() {
     const {classes, handleMoreInfoOnClick} = this.props;
-    const {data, isInputDialogOpen, isInfoOpen, infoDetail} = this.state;
+    const {data, isInputDialogOpen, isInfoOpen, infoDetail, isTableView} = this.state;
 
     return (
       <div className={classes.root}>
-        <AutoSizer>
-        {(({width, height}) => width === 0 || height === 0 ? null : (
-          <SystemNetwork
-            width={(width-5)} height={(height-5)}
-            language={"EN"}
-            initData={data}
-            ref={this.systemNetworkRef}
-            nodeClickCallback={this._onClickNode}
-            />
-          ))}
-        </AutoSizer>
+        { this._renderDisplay() }
         <Button
           variant="fab"
           color="secondary"
           aria-label="Add"
-          className={classes.addButton}
+          className={classes.viewButton}
           onClick={this._onClickAddNetwork}
           >
           <AddIcon/>
