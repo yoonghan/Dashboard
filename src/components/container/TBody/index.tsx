@@ -21,6 +21,7 @@ const styles = (theme:Theme) => createStyles({
     height: "100%",
     position: "absolute",
     overflow: "auto",
+    zIndex: theme.zIndex.modal + 1,
     backgroundColor: fade(theme.palette.common.black, 0.25)
   },
 });

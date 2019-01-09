@@ -5,41 +5,16 @@ var express   = require('express'),
   bodyParser = require('body-parser'),
   env         = process.env;
 
-var NodeApp = function() {
+var NodeApp = function(argPort) {
   const self = this;
 
   self.setupVariables = function() {
     self.ipaddress = '0.0.0.0';
-    self.port      = 8000;
+    self.port      = argPort;
   };
 
   //All pages will default to index.html
   self.initializePages = function() {
-    self.app.get('/receiver', function(req, res) {
-      console.log(req.body, "Message");
-      res.status(200).send("OK");
-    });
-
-    self.app.get('/receiver/*', function(req, res) {
-      console.log(req.body, "Message P");
-      res.status(200).send("OK");
-    });
-
-    self.app.post('/receiver', function(req, res) {
-      console.log(req.body, "Message P");
-      res.status(200).send("OK");
-    });
-
-    self.app.post('/receiver/*', function(req, res) {
-      console.log(req.body, "Message P2");
-      res.status(200).send("OK");
-    });
-
-    self.app.options('/receiver', function(req, res) {
-      console.log(req.body, "Message O");
-      res.status(200).send("OK");
-    });
-
     self.app.get('/*', function(req, res) {
       res.sendFile(path.join(__dirname, '../public/html/index.html'), function(err) {
         if (err) {
@@ -69,6 +44,12 @@ var NodeApp = function() {
   };
 };
 
-var zapp = new NodeApp();
-zapp.initialize();
-zapp.start();
+//Start the app.
+if(process.argv.length > 0) {
+  var zapp = new NodeApp(Number(process.argv[2]));
+  zapp.initialize();
+  zapp.start();
+}
+else {
+  console.error("Specify the port number")
+}
