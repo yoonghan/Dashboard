@@ -79,8 +79,8 @@ class SystemNetworkLegend extends React.PureComponent<SystemNetworkLegendProps, 
     const {showStore, showAgent} = this.state;
 
     return (
-      <FormControl component="fieldset" className={classes.root}>
-        <FormLabel component="legend">Legend:</FormLabel>
+      <FormControl component="div" className={classes.root}>
+        <FormLabel component="label">Legend:</FormLabel>
         <FormGroup row>
           <FormControlLabel
             control={

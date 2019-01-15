@@ -108,7 +108,7 @@ class Collect extends React.Component<CollectProps, CollectState> {
         </Button>
         <Dialog onClose={this._handleDialogClick} aria-labelledby="inventory-collect-dialog" open={isDialogOpen}>
           <DialogTitle id="inventory-collect-dialog">Collect Inventory</DialogTitle>
-          <FormControl component="fieldset" className={classes.form}>
+          <FormControl component="div" className={classes.form}>
             <RadioGroup
               aria-label="Collect On"
               name="collectSchedule"

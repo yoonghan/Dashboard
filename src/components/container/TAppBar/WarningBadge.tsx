@@ -7,7 +7,7 @@ import { withStyles, createStyles, WithStyles, Theme } from '@material-ui/core/s
 
 const styles = (theme:Theme) => createStyles({
   badge: {
-    color: amber[700]
+    color: (theme.palette as any).warn.main
   }
 });
 

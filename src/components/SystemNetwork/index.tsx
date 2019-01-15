@@ -6,6 +6,9 @@ import {Simulation} from 'd3';
 import {SimulationNodeDatum, SimulationLinkDatum} from 'd3-force';
 import {getTranslator, Language, LocaleDefinition} from "../../const/i18n";
 import SystemNetworkLegend from './SystemNetworkLegend';
+import green from '@material-ui/core/colors/green';
+import amber from '@material-ui/core/colors/amber';
+import red from '@material-ui/core/colors/red';
 
 /**
 * Fully envision with pure d3 js
@@ -16,11 +19,18 @@ export enum NodeType {
   GENERAL
 }
 
+export enum StatusType {
+  CONNECTED_UNAUTHENTICATED,
+  CONNECTED_AUTHENTICATED,
+  DISCONNECTED
+}
+
 export interface NodeInfoModal {
   name: string;
   ipAddress: string;
   hostname: string;
   nodeType: NodeType;
+  connectionStatus: StatusType;
   group: string;
 }
 
@@ -34,7 +44,7 @@ export interface SystemNetworkProps {
   height: number;
   initData: NodeDataModal;
   language: string;
-  nodeClickCallback: (nodeInfo: NodeInfoModal) => void;
+  nodeClickCallback: (nodeInfo: NodeInfoModal) => () => void;
 }
 
 class SystemNetwork extends React.Component<SystemNetworkProps, {}> {
@@ -93,6 +103,7 @@ class SystemNetwork extends React.Component<SystemNetworkProps, {}> {
         ipAddress: newNode.ipAddress,
         hostname: newNode.hostname,
         nodeType: newNode.nodeType,
+        connectionStatus: newNode.connectionStatus,
         group: newNode.group
       });
 
@@ -129,22 +140,30 @@ class SystemNetwork extends React.Component<SystemNetworkProps, {}> {
   _toggleShowMaster = (show: boolean) => {
     const svg = d3.select(this.networkRef.current);
     if(show) {
-      svg.selectAll("circle.master").attr('class', 'master');
+      const selectAll = svg.selectAll("circle.master");
+      const state = selectAll.attr('class');
+      const newState = state.replace(" hide","");
+      selectAll.attr('class', `${newState}`);
     }
     else {
-      svg.selectAll("circle.master").attr('class', 'master hide');
+      const selectAll = svg.selectAll("circle.master");
+      const state = selectAll.attr('class');
+      selectAll.attr('class', `${state} hide`);
     }
   }
 
   _toggleShowAgent = (show: boolean) => {
     const svg = d3.select(this.networkRef.current);
     if(show) {
-      svg.selectAll("circle.agent").attr("class", "agent");
-      svg.selectAll("line").attr("class", "");
+      const selectAll = svg.selectAll("circle.agent");
+      const state = selectAll.attr('class');
+      const newState = state.replace(" hide","");
+      selectAll.attr('class', `${newState}`);
     }
     else {
-      svg.selectAll("circle.agent").attr("class", "agent hide");
-      svg.selectAll("line").attr("class", "hide");
+      const selectAll = svg.selectAll("circle.agent");
+      const state = selectAll.attr('class');
+      selectAll.attr('class', `${state} hide`);
     }
   }
 
@@ -157,6 +176,7 @@ class SystemNetwork extends React.Component<SystemNetworkProps, {}> {
         name: obj.name,
         ipAddress: obj.ipAddress,
         hostname: obj.hostname,
+        connectionStatus: obj.connectionStatus,
         nodeType: obj.nodeType,
         group: obj.group
       }
@@ -261,7 +281,16 @@ class SystemNetwork extends React.Component<SystemNetworkProps, {}> {
           .on('drag', this._nodeDragged)
           .on('end', this._nodeDragEnded(this.force)),
       )
-      .on("click", this.props.nodeClickCallback);
+      .on("click", this.props.nodeClickCallback(
+          {
+            name: "Store 01",
+            ipAddress: "201.200.200.200",
+            hostname: "",
+            nodeType: NodeType.MASTER,
+            connectionStatus: StatusType.CONNECTED_AUTHENTICATED,
+            group: `1`,
+          }
+      ));
     //Append title
     circleNode.append<SVGTitleElement>('title').append<SVGTSpanElement>('tspan').text(this._renderTitle);
     //
@@ -285,12 +314,28 @@ class SystemNetwork extends React.Component<SystemNetworkProps, {}> {
     this.force.alpha(1).restart();
   }
 
+  _displayNodeColor = (data:NodeInfoModal) => {
+    const connStatus = data.connectionStatus;
+    switch(connStatus) {
+      case StatusType.CONNECTED_AUTHENTICATED:
+      return "connSuccess";
+      case StatusType.CONNECTED_UNAUTHENTICATED:
+      return "connWarning";
+      case StatusType.DISCONNECTED:
+      return "connError";
+      default:
+      return "";
+    }
+  }
+
   _displayClass = (data:NodeInfoModal) => {
+
+
     switch(data.nodeType) {
       case NodeType.MASTER:
-        return "master newNode";
+        return "master newNode " + this._displayNodeColor(data);
       default:
-        return "agent";
+        return "agent " + this._displayNodeColor(data);
     }
   }
 
@@ -341,8 +386,18 @@ class SystemNetwork extends React.Component<SystemNetworkProps, {}> {
         <svg width={width} height={height} ref={this.networkRef} viewBox={`0 0 ${this.zoomWidth} ${this.zoomHeight}`} className={"wc-system-network"}>
           <style jsx>
           {`
+            .wc-system-network :global(circle.connSuccess) {
+              fill: ${green[700]};
+            },
+            .wc-system-network :global(circle.connWarning) {
+              fill: ${amber[700]};
+            },
+            .wc-system-network :global(circle.connError) {
+              fill: ${red[700]};
+            }
+
             .wc-system-network {
-              color: blue;
+              color: green;
             }
 
             .wc-system-network :global(line) {
@@ -356,7 +411,7 @@ class SystemNetwork extends React.Component<SystemNetworkProps, {}> {
             }
 
             .wc-system-network :global(circle) {
-              fill: rgb(31, 119, 180);
+              //fill: rgb(31, 119, 180);
             }
 
             .wc-system-network :global(circle:hover) {
@@ -369,7 +424,7 @@ class SystemNetwork extends React.Component<SystemNetworkProps, {}> {
             }
 
             .wc-system-network :global(circle.master.newNode) {
-              animation: a-blinker 10s linear;
+              animation: a-blinker 5s linear;
             }
 
             .wc-system-network :global(circle.agent) {
@@ -378,18 +433,18 @@ class SystemNetwork extends React.Component<SystemNetworkProps, {}> {
             }
 
             .wc-system-network :global(circle.master.hide) {
-              animation: a-hider 0.5s linear;
+              animation: a-hider 0.3s linear;
               opacity: 0;
             }
 
             .wc-system-network :global(circle.agent.hide) {
-              animation: a-hider 0.5s linear;
+              animation: a-hider 0.3s linear;
               opacity: 0;
             }
 
             @keyframes a-blinker {
               10% {
-                fill: #ff0000;
+                fill: #333333;
               }
             }
 

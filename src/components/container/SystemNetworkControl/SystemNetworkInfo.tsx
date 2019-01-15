@@ -38,13 +38,11 @@ const styles = (theme:Theme) => createStyles({
 })
 
 export interface SystemNetworkInfoInputModal {
-  storeName: string;
   ipAddress: string;
   hostname: string;
 }
 
 interface SystemNetworkInfoProps extends WithStyles<typeof styles> {
-  storeName: string;
   ipAddress: string;
   hostname: string;
   openSideBar: boolean;
@@ -57,11 +55,10 @@ interface SystemNetworkInfoProps_Formik extends SystemNetworkInfoProps, FormikPr
 
 const SystemNetworkInfoForm: React.SFC<SystemNetworkInfoProps_Formik> =
     ({openSideBar, handleClose, handleMoreInfoOnClick, isSubmitting, handleSubmit, errors, values, handleChange, classes}) => {
-
   return (
     <Drawer anchor="right" open={openSideBar} onClose={handleClose}>
       <form onSubmit={handleSubmit} className={classes.inset}>
-        <FormControl component="fieldset">
+        <FormControl component="div">
           <FormGroup>
             <FormLabel>Connection Information</FormLabel>
             <Chip label="OK" className={`${classes.chip} ${classes.statusOk}`}/>
@@ -85,16 +82,6 @@ const SystemNetworkInfoForm: React.SFC<SystemNetworkInfoProps_Formik> =
               }
             />
             <Divider/>
-            <TextField
-              required
-              id="store-name"
-              name="storeName"
-              label="Store Name"
-              margin="normal"
-              onChange={handleChange}
-              value={values.storeName}
-              error={(errors.storeName && errors.storeName !== '')}
-              />
             <Ipv4TextField
               required
               id="ip-address"
@@ -132,17 +119,12 @@ const SystemNetworkInfoForm: React.SFC<SystemNetworkInfoProps_Formik> =
 const SystemNetworkInfo = withFormik<SystemNetworkInfoProps, SystemNetworkInfoInputModal>({
   mapPropsToValues: props => {
     return {
-      storeName: props.storeName || '',
-      ipAddress: props.ipAddress || '',
-      hostname: props.hostname || ''
+      ipAddress: "  1.204.204.402",
+      hostname: (props as any).hostname
     };
   },
   validate: (values: SystemNetworkInfoInputModal) => {
     let errors: FormikErrors<SystemNetworkInfoInputModal> = {};
-
-    if (!values.storeName) {
-      errors.storeName = 'Required';
-    }
 
     if (!values.ipAddress) {
       errors.ipAddress = 'Required';

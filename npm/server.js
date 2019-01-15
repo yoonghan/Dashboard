@@ -10,7 +10,7 @@ var NodeApp = function(argPort) {
 
   self.setupVariables = function() {
     self.ipaddress = '0.0.0.0';
-    self.port      = argPort;
+    self.port      = parseInt(argPort, 10);
   };
 
   //All pages will default to index.html
@@ -46,10 +46,11 @@ var NodeApp = function(argPort) {
 
 //Start the app.
 if(process.argv.length > 0) {
-  var zapp = new NodeApp(Number(process.argv[2]));
+  const port = (process.env.PORT || process.argv[2])
+  var zapp = new NodeApp(port);
   zapp.initialize();
   zapp.start();
 }
 else {
-  console.error("Specify the port number")
+  console.error("Specify the port number, or set into environment PORT path")
 }

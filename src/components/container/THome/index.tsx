@@ -7,7 +7,7 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import SystemNetworkControl from "../SystemNetworkControl";
 import withLoadConnection from "../../../hoc/withLoadConnection";
 import {BasicLoaderModal} from "../../../hoc/withLoadConnection";
-import { fetchStores, StoreFetchModal } from "../../../ducks/StoreFetch";
+import { fetchStores, fetchFullStores, StoreFetchModal } from "../../../ducks/StoreFetch";
 
 interface ResponseModal {
   store: StoreFetchModal
@@ -15,8 +15,13 @@ interface ResponseModal {
 
 interface THomeProps extends RouteComponentProps<any>, BasicLoaderModal<ResponseModal> {}
 
-const THome: React.SFC<THomeProps> = ({history, items, error}) => {
-  return <SystemNetworkControl handleMoreInfoOnClick={()=>{history.push("/serverinfo")}}/>
+const THome: React.SFC<THomeProps> = ({history, store, error}) => {
+  const {items} = store;
+  return <
+    SystemNetworkControl
+    handleMoreInfoOnClick={()=>{history.push("/serverinfo")}}
+    networkData={items.data}
+    />
 }
 
 const mapStateToProps = (state:any) => ({
@@ -29,7 +34,7 @@ const mapStateToProps = (state:any) => ({
 });
 
 const composeComponent = compose (
-  withLoadConnection(fetchStores, mapStateToProps),
+  withLoadConnection(fetchFullStores, mapStateToProps),
   withRouter
 )
 

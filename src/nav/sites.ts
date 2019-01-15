@@ -1,13 +1,14 @@
 `use strict`
 
 import * as React from 'react';
-import Setting from "../components/routable/Setting";
-import Home from "../components/routable/Home";
-import Inventory from "../components/routable/Inventory";
-import ServerInfo from "../components/routable/ServerInfo";
-import NotificationAlert from "../components/routable/Notification/Alert";
-import NotificationWarning from "../components/routable/Notification/Warning";
-import NotificationMail from "../components/routable/Notification/Mail";
+
+const Setting = React.lazy(() => import("../components/routable/Setting"));
+const Home = React.lazy(() => import("../components/routable/Home"));
+const Inventory = React.lazy(() => import("../components/routable/Inventory"));
+const ServerInfo = React.lazy(() => import("../components/routable/ServerInfo"));
+const NotificationAlert = React.lazy(() => import("../components/routable/Notification/Alert"));
+const NotificationWarning = React.lazy(() => import("../components/routable/Notification/Warning"));
+const NotificationMail = React.lazy(() => import("../components/routable/Notification/Mail"));
 
 export interface RouteModal {
   path: string; //Url path
@@ -50,6 +51,7 @@ export const routes:Array<RouteModal> = [
     keywords: ["inventory", "hardware", "software", "info"],
     tags: ["inventory"],
     exact: true,
+    isNotMenuItem: true,
     component: ServerInfo
   },
   {

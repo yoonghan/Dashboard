@@ -138,7 +138,7 @@ class Process extends React.Component<ProcessProps, ProcessState> {
         </Button>
         <Dialog onClose={this._handleDialogClick} aria-labelledby="inventory-collect-dialog" open={isDialogOpen}>
           <DialogTitle id="inventory-collect-dialog">Inventory Collection Status</DialogTitle>
-          <FormControl component="fieldset" className={classes.form}>
+          <FormControl component="div" className={classes.form}>
             {this._controlDisplay()}
             <Divider className={classes.form}/>
             <ButtonGroup>

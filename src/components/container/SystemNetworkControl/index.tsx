@@ -10,12 +10,13 @@ import { withStyles, createStyles, WithStyles, Theme } from '@material-ui/core/s
 import {AutoSizer} from 'react-virtualized';
 import SystemInTableView from './SystemInTableView';
 import SystemNetwork from '../../SystemNetwork';
-import {NodeInfoModal, NodeType, NodeDataModal} from '../../SystemNetwork';
+import {NodeInfoModal, NodeType, StatusType, NodeDataModal} from '../../SystemNetwork';
 import SystemNetworkInfo from './SystemNetworkInfo';
 import {SystemNetworkInfoInputModal} from './SystemNetworkInfo';
 import SystemNetworkControlInput from './SystemNetworkControlInput';
-import {SystemNetworkControlInputModal} from './SystemNetworkControlInput';
-import {sampleLinkedNodes, sampleNodes} from '../../../samples/network';
+//import {sampleLinkedNodes, sampleNodes} from '../../../samples/network';
+import {convertNetworkDataIntoSystemNetwork} from "./networkLinkConverter";
+import {NetworkDataModal} from "./modal";
 
 const buttonPosition= 20;
 const styles = (theme:Theme) => createStyles({
@@ -26,22 +27,30 @@ const styles = (theme:Theme) => createStyles({
   addButton: {
     right: buttonPosition + "px",
     bottom: buttonPosition + "px",
-    position: 'absolute'
+    position: 'fixed'
   },
   viewButton: {
     right: (buttonPosition * 4) + "px",
     bottom: buttonPosition + "px",
-    position: 'absolute'
+    position: 'fixed'
   }
 });
 
+export interface SystemNetworkControlModal {
+  storeName: string;
+  ipAddress: string;
+  hostname: string;
+  checkHostIp: boolean;
+  eventFilter: number;
+}
+
 interface SystemNetworkControlProps extends WithStyles<typeof styles> {
-  handleMoreInfoOnClick: ()=>void;
+  handleMoreInfoOnClick: () => void;
+  networkData: NetworkDataModal;
 }
 
 interface SystemNetworkControlState {
   isTableView: boolean;
-  data: NodeDataModal;
   counter: number;
   isInputDialogOpen: boolean;
   isInfoOpen: boolean;
@@ -54,20 +63,12 @@ class SystemNetworkControl extends React.PureComponent<SystemNetworkControlProps
 
   constructor(props: any) {
     super(props);
-    const listOfNodes:Array<NodeInfoModal> = sampleNodes;
-    const listOfLinks:Array<any> = sampleLinkedNodes;
-
     this.state = {
       isTableView: true,
-      data: {
-        nodes: listOfNodes,
-        links: listOfLinks
-      },
       counter: 0,
       isInputDialogOpen: false,
       isInfoOpen: false,
       infoDetail: {
-        storeName: '',
         ipAddress: '',
         hostname: ''
       }
@@ -82,27 +83,34 @@ class SystemNetworkControl extends React.PureComponent<SystemNetworkControlProps
     );
   }
 
-  _onSubmitAddNetwork = (output:SystemNetworkControlInputModal) => {
+  _onSubmitAddNetwork = (output:SystemNetworkControlModal) => {
+    const storeName = "Store 01";
+    if(this.systemNetworkRef.current === null || !this.systemNetworkRef.current) {
+      return;
+    }
 
     const component = this.systemNetworkRef.current.addNodes([
       {
-        name: output.storeName,
+        name: storeName,
         ipAddress: output.ipAddress,
         hostname: output.hostname,
+        connectionStatus: StatusType.CONNECTED_AUTHENTICATED,
         nodeType: NodeType.MASTER,
         group: output.storeName
       },
       {
-        name: `Child ${output.storeName}`,
+        name: `Child ${storeName}`,
         ipAddress: output.ipAddress,
         hostname: output.hostname,
+        connectionStatus: StatusType.CONNECTED_AUTHENTICATED,
         nodeType: NodeType.GENERAL,
         group: output.storeName
       },
       {
-        name: `Child ${output.storeName}`,
+        name: `Child ${storeName}`,
         ipAddress: output.ipAddress,
         hostname: output.hostname,
+        connectionStatus: StatusType.CONNECTED_AUTHENTICATED,
         nodeType: NodeType.GENERAL,
         group: output.storeName
       }
@@ -125,12 +133,11 @@ class SystemNetworkControl extends React.PureComponent<SystemNetworkControlProps
     );
   }
 
-  _onClickNode = (data: NodeInfoModal) => {
+  _onClickNode = (data: NodeInfoModal) => () => {
     this.setState(
       produce<SystemNetworkControlState>(draft => {
         draft.isInfoOpen = true;
         draft.infoDetail = {
-          storeName: data.name,
           ipAddress: data.ipAddress,
           hostname: data.hostname
         }
@@ -146,60 +153,73 @@ class SystemNetworkControl extends React.PureComponent<SystemNetworkControlProps
     );
   }
 
+  _renderTableView = () => {
+    const {classes, networkData} = this.props;
+
+    return (
+      <React.Fragment>
+        <SystemInTableView
+          networkData={networkData}
+          nodeClickCallback={this._onClickNode}/>
+        <Button
+          variant="fab"
+          color="primary"
+          aria-label="View"
+          className={classes.viewButton}
+          onClick={this._onClickViewNetwork}
+          >
+          <ScatterPlotIcon/>
+        </Button>
+      </React.Fragment>
+    )
+  }
+
+  _renderGraphView = () => {
+    const {classes, networkData} = this.props;
+    const data = convertNetworkDataIntoSystemNetwork(networkData);
+
+    return (
+      <React.Fragment>
+        <AutoSizer>
+        {(({width, height}) => width === 0 || height === 0 ? null : (
+          <SystemNetwork
+            width={(width-5)} height={(height-5)}
+            language={"EN"}
+            initData={data}
+            ref={this.systemNetworkRef}
+            nodeClickCallback={this._onClickNode}
+            />
+          ))}
+        </AutoSizer>
+
+        <Button
+          variant="fab"
+          color="primary"
+          aria-label="View"
+          className={classes.viewButton}
+          onClick={this._onClickViewNetwork}
+          >
+          <TableChartIcon/>
+        </Button>
+      </React.Fragment>
+    )
+  }
+
   _renderDisplay = () => {
     const {classes} = this.props;
-    const {data, isTableView} = this.state;
+    const {isTableView} = this.state;
 
     if(isTableView) {
-      return (
-        <React.Fragment>
-          <SystemInTableView/>
-
-          <Button
-            variant="fab"
-            color="primary"
-            aria-label="View"
-            className={classes.addButton}
-            onClick={this._onClickViewNetwork}
-            >
-            <ScatterPlotIcon/>
-          </Button>
-        </React.Fragment>
-      )
+      return this._renderTableView();
     }
     else {
-      return (
-        <React.Fragment>
-          <AutoSizer>
-          {(({width, height}) => width === 0 || height === 0 ? null : (
-            <SystemNetwork
-              width={(width-5)} height={(height-5)}
-              language={"EN"}
-              initData={data}
-              ref={this.systemNetworkRef}
-              nodeClickCallback={this._onClickNode}
-              />
-            ))}
-          </AutoSizer>
-
-          <Button
-            variant="fab"
-            color="primary"
-            aria-label="View"
-            className={classes.addButton}
-            onClick={this._onClickViewNetwork}
-            >
-            <TableChartIcon/>
-          </Button>
-        </React.Fragment>
-      )
+      return this._renderGraphView();
     }
-
   }
 
   render() {
     const {classes, handleMoreInfoOnClick} = this.props;
-    const {data, isInputDialogOpen, isInfoOpen, infoDetail, isTableView} = this.state;
+    const {isInputDialogOpen, isInfoOpen, infoDetail, isTableView} = this.state;
 
     return (
       <div className={classes.root}>
@@ -208,7 +228,7 @@ class SystemNetworkControl extends React.PureComponent<SystemNetworkControlProps
           variant="fab"
           color="secondary"
           aria-label="Add"
-          className={classes.viewButton}
+          className={classes.addButton}
           onClick={this._onClickAddNetwork}
           >
           <AddIcon/>

@@ -2,7 +2,8 @@ module.exports = {
     entry: "./src/index.tsx",
     output: {
         filename: "bundle.js",
-        publicPath: "/js",
+        publicPath: "/js/",
+        chunkFilename: '[name].bundle.js',
         path: __dirname + "/dist"
     },
 

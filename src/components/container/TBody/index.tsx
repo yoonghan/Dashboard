@@ -70,7 +70,7 @@ class TBody extends React.Component<TBodyProps, TBodyState> {
                   <Route
                     path={route.path}
                     exact={route.exact}
-                    component={route.component}
+                    component={(props:any) => <route.component {...props} />} //TODO: Wait incoming fixes in future.
                     key={`tbody_${route.path}`}/>
                 );
               })

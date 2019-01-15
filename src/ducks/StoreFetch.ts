@@ -25,9 +25,63 @@ export const fetchFailure = (error:any) => ({
 });
 
 const initialState:any = {
+  isLoading: true,
   items: [],
   error: null
 };
+
+export const fetchFullStores = () => {
+  return {
+    types: [FETCH_BEGIN, FETCH_SUCCESS, FETCH_FAILURE],
+    fetchConfig: {
+      path: '/rems',
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      method: "POST",
+      body: {
+        "query":`
+        {
+          countries {
+            name
+            regionIds
+            regions {
+              name
+              id
+              storeIds
+              stores {
+               ipAddress
+               hostName
+               id
+              	agents{
+                  id
+                  agentMOId
+                  agentVersion
+                  agentType
+                  deviceId
+                  systemId
+                  ipAddress
+                  is64bitOS
+                  mgmtPort
+                  connectionStatus
+                  agentAuthState
+                  modelNumber
+                  MACAddress
+                  osValue
+                  storeId
+                }
+              }
+            }
+          }
+        }`
+      },
+      success: function(json:any) {
+        return json;
+      }
+    }
+  }
+}
 
 export const fetchStores = () => {
   return {
@@ -49,7 +103,7 @@ export const fetchStores = () => {
         }`
       },
       success: function(json:any) {
-        return {data: json};
+        return json;
       }
     }
   }

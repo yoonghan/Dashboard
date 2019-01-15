@@ -1,38 +1,38 @@
-import {NodeInfoModal, NodeType} from "../components/SystemNetwork";
+import {NodeInfoModal, NodeType, StatusType} from "../components/SystemNetwork";
 
 export const sampleNodes:Array<NodeInfoModal> = [];
 export const sampleLinkedNodes:Array<any> = [];
 
 for(let i = 0; i < 40; i+=10) {
   sampleNodes.push(
-    { name: `Node ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.MASTER, group: `${i}` }
+    { name: `Node ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.MASTER, connectionStatus: StatusType.CONNECTED_AUTHENTICATED, group: `${i}` }
   );
   sampleNodes.push(
-    { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
+    { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, connectionStatus: StatusType.CONNECTED_AUTHENTICATED, group: `${i}` }
   );
   sampleNodes.push(
-    { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
+    { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, connectionStatus: StatusType.CONNECTED_AUTHENTICATED, group: `${i}` }
   );
   sampleNodes.push(
-    { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
+    { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, connectionStatus: StatusType.CONNECTED_AUTHENTICATED, group: `${i}` }
   );
   sampleNodes.push(
-    { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
+    { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, connectionStatus: StatusType.CONNECTED_AUTHENTICATED, group: `${i}` }
   );
   sampleNodes.push(
-    { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
+    { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, connectionStatus: StatusType.CONNECTED_AUTHENTICATED, group: `${i}` }
   );
   sampleNodes.push(
-    { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
+    { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, connectionStatus: StatusType.CONNECTED_AUTHENTICATED, group: `${i}` }
   );
   sampleNodes.push(
-    { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
+    { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, connectionStatus: StatusType.CONNECTED_AUTHENTICATED, group: `${i}` }
   );
   sampleNodes.push(
-    { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
+    { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, connectionStatus: StatusType.CONNECTED_AUTHENTICATED, group: `${i}` }
   );
   sampleNodes.push(
-    { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, group: `${i}` }
+    { name: `ChildNode ${i}`, ipAddress: `192.168.${i}`, hostname: `Host${i}`, nodeType: NodeType.GENERAL, connectionStatus: StatusType.CONNECTED_AUTHENTICATED, group: `${i}` }
   );
   sampleLinkedNodes.push(
     { source: i+1, target: i }

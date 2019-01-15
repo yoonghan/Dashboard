@@ -1,28 +1,52 @@
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
+import green from '@material-ui/core/colors/green';
+import amber from '@material-ui/core/colors/amber';
 import pink from '@material-ui/core/colors/pink';
 import blue from '@material-ui/core/colors/blue';
 import purple from '@material-ui/core/colors/purple';
 import blueGrey from '@material-ui/core/colors/blueGrey';
 
-export const toshiba_theme = createMuiTheme({
+//TODO: Fix on warn, success type check.
+interface IExtendColor {
+  main: string;
+}
+
+interface IExtendPalette {
+  warn: IExtendColor;
+  success: IExtendColor;
+}
+
+export const toshiba_theme = createMuiTheme(({
   typography: {
     useNextVariants: true,
   },
   palette: {
     primary: blue,
     secondary: pink,
-  },
-});
+    warn: {
+      main: amber[700]
+    },
+    success: {
+      main: green[700]
+    }
+  }
+} as any));
 
-export const gadot_theme = createMuiTheme({
+export const gadot_theme = createMuiTheme(({
   typography: {
     useNextVariants: true,
   },
   palette: {
     primary: blueGrey,
     secondary: purple,
+    warn: {
+      main: amber[700]
+    },
+    success: {
+      main: green[700]
+    }
   },
-});
+} as any));
 
 export interface DashboardThemeModal {
   [key:string]: ThemeModal
