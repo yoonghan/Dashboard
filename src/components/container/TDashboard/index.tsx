@@ -6,9 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 
 const TDashboard: React.SFC<any> = () => (
   <BrowserRouter>
-    <React.Suspense fallback={<div>Loading...</div>}>
-      <Dashboard/>
-    </React.Suspense>
+    <Dashboard/>
   </BrowserRouter>
 )
 

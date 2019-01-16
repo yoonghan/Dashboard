@@ -7,6 +7,7 @@ import Portal from '@material-ui/core/Portal';
 import { getRouteList } from "../../../nav/util";
 import NotFound from "../../routable/NotFound";
 import TSearch from "../TSearch";
+import SplashScreen from "../../SplashScreen";
 
 const styles = (theme:Theme) => createStyles({
   root: {
@@ -63,20 +64,22 @@ class TBody extends React.Component<TBodyProps, TBodyState> {
         )}
         </SearchConsumer>
         <div ref={this.switchRef} className={classes.root}>
-          <Switch>
-            {
-              this.routes.map((route, idx) => {
-                return (
-                  <Route
-                    path={route.path}
-                    exact={route.exact}
-                    component={(props:any) => <route.component {...props} />} //TODO: Wait incoming fixes in future.
-                    key={`tbody_${route.path}`}/>
-                );
-              })
-            }
-            <Route component={NotFound} />
-          </Switch>
+          <React.Suspense fallback={<SplashScreen/>}>
+            <Switch>
+              {
+                this.routes.map((route, idx) => {
+                  return (
+                    <Route
+                      path={route.path}
+                      exact={route.exact}
+                      component={(props:any) => <route.component {...props} />}
+                      key={`tbody_${route.path}`}/>
+                  );
+                })
+              }
+              <Route component={NotFound} />
+            </Switch>
+          </React.Suspense>
         </div>
       </React.Fragment>
     );
