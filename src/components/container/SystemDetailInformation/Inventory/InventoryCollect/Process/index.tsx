@@ -20,7 +20,7 @@ import LeftIcon from '@material-ui/icons/ArrowLeft';
 import RightIcon from '@material-ui/icons/ArrowRight';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
-import * as moment from "moment";
+import moment from 'moment';
 import ButtonGroup from "../../../../../ButtonGroup";
 
 const styles = (theme:Theme) => createStyles({

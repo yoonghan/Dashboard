@@ -38,3 +38,6 @@ To check how your process will execute:
 }],
 ```
 2. import javascript polyfill for promises
+
+# Manual fixes
+./node_modules/@date-io/moment/build/moment-utils.d.ts, please to import * as defaultMoment from "moment";
