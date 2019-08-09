@@ -1,4 +1,7 @@
-module.exports = {
+const webpack = require('webpack');
+
+module.exports = (env) => {
+  return {
     entry: "./src/index.tsx",
     output: {
         filename: "bundle.js",
@@ -33,12 +36,14 @@ module.exports = {
         ]
     },
 
-    // When importing a module whose path matches one of the following, just
-    // assume a corresponding global variable exists and use that instead.
-    // This is important because it allows us to avoid bundling all of our
-    // dependencies, which allows browsers to cache those libraries between builds.
+    plugins: [
+      // add the plugin to your plugins array
+      new webpack.DefinePlugin({ "process.env.API_URL": JSON.stringify(env.API_URL) })
+    ],
+
     externals: {
-        "react": "React",
-        "react-dom": "ReactDOM"
+      "react": "React",
+      "react-dom": "ReactDOM"
     }
+  }
 };
