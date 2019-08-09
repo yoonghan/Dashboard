@@ -4,6 +4,8 @@ hence added a searchable screen.
 
 The screen works with [DashboardGraphQL project](https://github.com/yoonghan/DashboardGraphQL/)
 
+## Screenshots
+
 ![alt text](gitimg/screenshot1.png?raw=true)
 ![alt text](gitimg/screenshot2.png?raw=true)
 
