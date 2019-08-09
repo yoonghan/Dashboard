@@ -2,9 +2,7 @@
 Dashboard on system monitoring. Found that menu are a very troublesome function
 hence added a searchable screen.
 
-The screen works with
-
-[Dashboard graphql](https://github.com/yoonghan/DashboardGraphQL/)
+The screen works with [DashboardGraphQL project](https://github.com/yoonghan/DashboardGraphQL/)
 
 ![alt text](gitimg/screenshot1.png?raw=true)
 ![alt text](gitimg/screenshot2.png?raw=true)
