@@ -2,7 +2,7 @@
 
 ## Install
 ```
-npm run Install
+npm run install
 ```
 
 ## Execute
