@@ -105,6 +105,15 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     );
   }
 
+  componentDidMount = () => {
+    //Written for demo.
+    const path = window.location.pathname;
+    if(path.indexOf("/host") === 0) {
+      const {history} = this.props;
+      history.push("/");
+    }
+  }
+
   render() {
     const {theme, inSearchMode, isCompact, searchText} = this.state;
     return (

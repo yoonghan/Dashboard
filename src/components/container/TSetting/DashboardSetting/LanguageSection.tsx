@@ -42,6 +42,7 @@ class LanguageSection extends React.Component<LanguageSectionProps, LanguageSect
 
   _changeSelection = () => (event:React.ChangeEvent<HTMLSelectElement>) => {
     const selection = event.target.value;
+    alert("Not implemented");
   }
 
   render() {

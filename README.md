@@ -39,5 +39,13 @@ To check how your process will execute:
 ```
 2. import javascript polyfill for promises
 
-# Manual fixes
-./node_modules/@date-io/moment/build/moment-utils.d.ts, please to import * as defaultMoment from "moment";
+# For external hosting.
+1. If there are needs for external hosting (e.g. html with different /js folder). Change webpack.config.js publicPath: "/js/", to the correct directory.
+2. Build with command
+
+```
+npm run prod
+```
+
+3. Incase one is lazy t change webpack.config.js, one can directly change it via dist/bundle.js and rename "/js/" to the desired url.
+4. Remember to change public/html/index.html to the correct .js and use production version of react.

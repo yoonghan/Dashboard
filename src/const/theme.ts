@@ -16,7 +16,7 @@ interface IExtendPalette {
   success: IExtendColor;
 }
 
-export const toshiba_theme = createMuiTheme(({
+export const walcron_theme = createMuiTheme(({
   typography: {
     useNextVariants: true,
   },
@@ -61,8 +61,8 @@ function getThemeAttribute (idx:number):ThemeModal {
   switch(idx) {
     case 0:
       return {
-        label: "Toshiba",
-        theme: toshiba_theme
+        label: "Walcron",
+        theme: walcron_theme
       }
     case 1:
       return {
@@ -71,8 +71,8 @@ function getThemeAttribute (idx:number):ThemeModal {
       }
   }
   return {
-    label: "Toshiba",
-    theme: toshiba_theme
+    label: "Walcron",
+    theme: walcron_theme
   };
 }
 
@@ -89,8 +89,8 @@ export function getTheme(theme:ThemeTypes) {
   return THEMES_AVAILABLE[theme];
 }
 
-export type ThemeTypes = "toshiba_theme"| "gadot_theme";
-export const THEMES:Array<ThemeTypes> = ["toshiba_theme", "gadot_theme"];
+export type ThemeTypes = "walcron_theme"| "gadot_theme";
+export const THEMES:Array<ThemeTypes> = ["walcron_theme", "gadot_theme"];
 export const THEMES_AVAILABLE:DashboardThemeModal = getThemesAvailable(THEMES);
-export const DEFAULT_THEME = "toshiba_theme";
+export const DEFAULT_THEME = "walcron_theme";
 export default THEMES_AVAILABLE[DEFAULT_THEME].theme;

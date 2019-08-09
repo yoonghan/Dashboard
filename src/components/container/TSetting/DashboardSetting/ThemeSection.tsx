@@ -44,11 +44,7 @@ class ThemeSection extends React.Component<ThemeSectionProps, ThemeSectionState>
 
   _changeSelection = (changeTheme:((selectedTheme:string)=>void)) => (event:React.ChangeEvent<HTMLSelectElement>) => {
     const selection = event.target.value;
-    this.setState(
-      produce<ThemeSectionState>(draft => {
-        changeTheme(selection);
-      })
-    );
+    changeTheme(selection);
   }
 
   _drawMenuOfThemes = () => {

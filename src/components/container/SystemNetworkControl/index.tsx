@@ -64,7 +64,7 @@ class SystemNetworkControl extends React.PureComponent<SystemNetworkControlProps
   constructor(props: any) {
     super(props);
     this.state = {
-      isTableView: true,
+      isTableView: false,
       counter: 0,
       isInputDialogOpen: false,
       isInfoOpen: false,
