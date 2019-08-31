@@ -1,5 +1,7 @@
 `use strict`
 
+const PATH='/api';
+
 export interface StoreFetchModal {
   isLoading: boolean,
   error: string,
@@ -34,7 +36,7 @@ export const fetchFullStores = () => {
   return {
     types: [FETCH_BEGIN, FETCH_SUCCESS, FETCH_FAILURE],
     fetchConfig: {
-      path: 'rems',
+      path: PATH,
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json"
@@ -87,7 +89,7 @@ export const fetchStores = () => {
   return {
     types: [FETCH_BEGIN, FETCH_SUCCESS, FETCH_FAILURE],
     fetchConfig: {
-      path: 'rems',
+      path: PATH,
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json"

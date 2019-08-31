@@ -59,6 +59,7 @@ Open 2 terminals with each running
 npm run prod
 ```
 
-3. Incase one is lazy t change webpack.config.js, one can directly change it via dist/bundle.js and rename "/js/" to the desired url.
+3. Incase one is lazy change webpack.config.js, one can directly change it via dist/bundle.js and rename "/js/" to the desired url.
 4. Remember to change public/html/index.html to the correct .js and use production version of react.
 5. Update package.json of API-URL. *NOTE:* not using dotenv to do this.
+6. /src/component/Dashboard/Dashboard needs to modify if(path.indexOf("/static/host") === 0) {, depending on hosted environment.

@@ -108,7 +108,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
   componentDidMount = () => {
     //Written for demo.
     const path = window.location.pathname;
-    if(path.indexOf("/host") === 0) {
+    if(path.indexOf("/static/host") === 0) {
       const {history} = this.props;
       history.push("/");
     }

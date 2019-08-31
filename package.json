@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node --use_strict ./npm/server.js 8000",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server  --env.API_URL=http://localhost:8081 --mode=development",
-    "prod": "webpack  --env.API_URL=http://localhost:8081 --mode=production",
+    "dev": "webpack-dev-server  --env.API_URL=http://localhost:3000 --mode=development",
+    "prod": "webpack  --env.API_URL=https://dashboardgraphql-mvxqcsmwij.now.sh --mode=production",
     "storybook": "start-storybook -p 9001 -c .storybook"
   },
   "author": "Han",
